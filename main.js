@@ -1,3 +1,5 @@
+const { checkForForwardSlashStart, getCommandParametersFromString } = require('./parsingFunctions');
+const { handleCommand } = require('./commandHandler');
 const qrcode = require('qrcode-terminal');
 const Loading = require('loading-cli');
 const color = require('colors-cli/toxic');
@@ -45,4 +47,18 @@ client.on('message', async msg => {
 	console.log("received:", msg.body);
 });
 
-client.initialize();
+client.on('message_create', (msg) => {
+    if (msg.fromMe){
+        console.log("Rec");
+    }
+    // Fired on all message creations, including your own
+    if (msg.fromMe && checkForForwardSlashStart(msg.body)) {
+        const commandParameters = getCommandParametersFromString(msg.body);
+        const newMessage = handleCommand(commandParameters);
+        msg.reply(newMessage);
+    }
+    // else{
+    //     console.log('Invalid command format');
+    //     console.log(msg.body);
+    // }
+})
