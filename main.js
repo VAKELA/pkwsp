@@ -47,15 +47,14 @@ client.on('message', async msg => {
 	console.log("received:", msg.body);
 });
 
-client.on('message_create', (msg) => {
+client.on('message_create', async msg => {
     if (msg.fromMe){
         console.log("Rec");
     }
     // Fired on all message creations, including your own
     if (msg.fromMe && checkForForwardSlashStart(msg.body)) {
         const commandParameters = getCommandParametersFromString(msg.body);
-        const newMessage = handleCommand(commandParameters);
-        msg.reply(newMessage);
+        handleCommand(commandParameters, msg, client);
     }
     // else{
     //     console.log('Invalid command format');

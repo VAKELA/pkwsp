@@ -26,7 +26,6 @@ function getInvalidCommandMessage(command) {
     return(`Unknown command: ${command}`);
 }
 
-
 module.exports = {
     getBankData,
     getInvalidCommandMessage

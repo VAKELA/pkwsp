@@ -131,3 +131,4 @@ dist
 /.wwebjs_cache
 /.wwebjs_auth
 /consts.js
+/assets
