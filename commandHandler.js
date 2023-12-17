@@ -1,6 +1,7 @@
 
 const { getInvalidCommandMessage, getBankData } = require('./commandFunctions');
 const { getPokemonPortraitOptions } = require('./faceHandler');
+const { getPokemonNumberByName } = require('./pokeAPI');
 const { MessageMedia } = require('whatsapp-web.js');
 
 
@@ -68,7 +69,8 @@ async function handleCommand(command, msg, client) {
             chat.sendMessage(faceTest);
             break
         case 'options':
-            const options = await getPokemonPortraitOptions(command[1]);
+            const pokemonIdOptions = await getPokemonNumberByName(command[1]);
+            const options = await getPokemonPortraitOptions(pokemonIdOptions);
             const formattedOptions = formatFileList(options);
             chat.sendMessage(formattedOptions);
             break
@@ -79,10 +81,11 @@ async function handleCommand(command, msg, client) {
             chat.sendMessage(faceTest, {sendMediaAsSticker:true, stickerAuthor:"https://github.com/VAKELA/pkwsp", stickerName:"totodile :)"});
             break
         case 'sticker':
-            const stickerUrl = `https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/${command[1]}/${command[2]}.png`;
+            const pokemonId = await getPokemonNumberByName(command[1]);
+            const stickerUrl = `https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/${pokemonId}/${command[2]}.png`;
             const stickerImage = await fetchImage(stickerUrl);
             const fetchSticker = new MessageMedia('image/png', stickerImage);
-            chat.sendMessage(fetchSticker, {sendMediaAsSticker:true, stickerAuthor:"https://github.com/VAKELA/pkwsp", stickerName:`Pokemon ${command[1]}`});
+            chat.sendMessage(fetchSticker, {sendMediaAsSticker:true, stickerAuthor:"https://github.com/VAKELA/pkwsp", stickerName:`${pokemonId}: ${command[1]}`});
             break
         default:
             const missingData = getInvalidCommandMessage(command);

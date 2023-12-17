@@ -3,7 +3,7 @@ const { handleCommand } = require('./commandHandler');
 const qrcode = require('qrcode-terminal');
 const Loading = require('loading-cli');
 const color = require('colors-cli/toxic');
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, List } = require('whatsapp-web.js');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -53,6 +53,9 @@ client.on('message_create', async msg => {
     }
     // Fired on all message creations, including your own
     if (msg.fromMe && checkForForwardSlashStart(msg.body)) {
+        // let sections = [{ title: 'sectionTitle', rows: [{ title: 'ListItem1', description: 'desc' }, { title: 'ListItem2' }] }];
+        // let list = new List('List body', 'btnText', sections, 'Title', 'footer');
+        // client.sendMessage(msg.from, list);
         const commandParameters = getCommandParametersFromString(msg.body);
         handleCommand(commandParameters, msg, client);
     }

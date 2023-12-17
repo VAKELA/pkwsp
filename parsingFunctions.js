@@ -13,8 +13,22 @@ function getCommandParametersFromString(inputString) {
     return subStrings;
 }
 
+function formatNumberWith4Digits(number) {
+    // Use String() to convert the number to a string
+    const numberString = String(number);
+  
+    // Calculate the number of leading zeros needed
+    const leadingZerosCount = 4 - numberString.length;
+  
+    // Pad the number with leading zeros using String.prototype.padStart()
+    const formattedNumber = numberString.padStart(4, '0');
+  
+    return formattedNumber;
+  }
+
 module.exports = {
     checkForForwardSlashStart,
     getCommandParametersFromString,
-    getValueOrMissing
+    getValueOrMissing,
+    formatNumberWith4Digits
 };
